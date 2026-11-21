@@ -13,3 +13,7 @@ Use an isolated, disposable build environment with bounded CPU, memory, time and
 ## MCP workloads
 
 Keep the native transport in the task record. A remotely accessed stdio service needs a pinned gateway plus verified server argv and a declared remote transport. Select stateful streamable HTTP when session continuity is required, or SSE only when required by the client. Bind the gateway to the worker's authorized service interface and pass the assigned port to discovery. Reject incompatible session or routing requirements. Publish HEALTHY only after a protocol-level initialization probe succeeds. Use task-specific completion checks for batch workloads.
+
+## Build repair
+
+Before submitting a build, reserve an attempt number under the task's persistent build budget. A duplicate delivery of the same attempt returns the existing result. Store the build artifact digest, failing instruction, redacted final 40 stderr lines and previous repairs. A failed Railpack build carries the plan and diagnostic context even when there was no previous Dockerfile. The model may propose a minimal Dockerfile replacement. Reject previously failed digests, rerun all admission checks, then allow another build only while the total is below three. A third failure or unsafe repair produces a terminal build error. Runtime retries reuse a successful image when its digest and policy still match.
