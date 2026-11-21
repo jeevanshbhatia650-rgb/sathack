@@ -17,3 +17,7 @@ Send on a conditional edge invokes a target node with custom state. Pass one tas
 ## Deterministic build plans
 
 PythonProvider checks repository files and reads TOML for project metadata. ConvertPlanToLLB consumes a BuildPlan and emits a BuildKit state plus image metadata. Preserve this plan as its own artifact. Dockerfile validation alone cannot inspect this route. [Source](https://github.com/railwayapp/railpack/blob/f52ebcd0bc95cd660ee03b67cf3b7cf3c125683c/core/providers/python/python.go) · [Implementation](https://github.com/railwayapp/railpack/blob/f52ebcd0bc95cd660ee03b67cf3b7cf3c125683c/buildkit/convert.go)
+
+## Dockerfile linting
+
+DL3002 tracks explicit root USER instructions by build stage. A missing USER instruction need not trigger it. OFFDOCK must also resolve inherited image configuration and verify the final effective user before running the image. [Source](https://github.com/hadolint/hadolint/blob/1d901b9c0b0d0445d19b1a9128d89fa55bb4604e/src/Hadolint/Rule/DL3002.hs)
