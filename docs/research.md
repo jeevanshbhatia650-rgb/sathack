@@ -13,3 +13,7 @@ In topological_generations, nodes with zero indegree form the frontier. Removing
 ## Dynamic dispatch
 
 Send on a conditional edge invokes a target node with custom state. Pass one task and attempt identity per Send. Keep worker I/O asynchronous so the graph step can finish while an unrelated service continues running. [Source](https://github.com/langchain-ai/langgraph/blob/c6335a4255dc1d8abc25a7677f9c072c7ab27b9c/libs/langgraph/langgraph/types.py)
+
+## Deterministic build plans
+
+PythonProvider checks repository files and reads TOML for project metadata. ConvertPlanToLLB consumes a BuildPlan and emits a BuildKit state plus image metadata. Preserve this plan as its own artifact. Dockerfile validation alone cannot inspect this route. [Source](https://github.com/railwayapp/railpack/blob/f52ebcd0bc95cd660ee03b67cf3b7cf3c125683c/core/providers/python/python.go) · [Implementation](https://github.com/railwayapp/railpack/blob/f52ebcd0bc95cd660ee03b67cf3b7cf3c125683c/buildkit/convert.go)
