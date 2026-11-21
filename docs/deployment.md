@@ -28,11 +28,11 @@ and optional sandbox usage follow those providers' terms.
 
 | Variable | Requirement | Source |
 | --- | --- | --- |
-| LLM_API_KEY | Required for agents | Your chosen model provider |
-| LLM_BASE_URL | Required configuration | Provider's OpenAI-compatible endpoint |
-| PLANNER_MODEL | Required configuration | Provider model catalog |
-| CONTAINERIZER_MODEL | Required configuration | Provider model catalog |
-| RECOVERY_MODEL | Required configuration | Provider model catalog |
+| LLM_API_KEY | Required for agents | Google AI Studio Gemini API key |
+| LLM_BASE_URL | Required configuration | Gemini OpenAI-compatible endpoint |
+| PLANNER_MODEL | Required configuration | Gemini model ID |
+| CONTAINERIZER_MODEL | Required configuration | Gemini model ID |
+| RECOVERY_MODEL | Required configuration | Gemini model ID |
 | DOCKERHUB_USERNAME | Required for authenticated Docker Hub mode | Docker Hub account |
 | DOCKERHUB_TOKEN | Required for authenticated Docker Hub mode | Docker Hub personal access tokens, Read/Write |
 | GITHUB_TOKEN | Required for higher API limits and private repository scans | Fine-grained token with repository Contents read permission |
@@ -41,10 +41,10 @@ and optional sandbox usage follow those providers' terms.
 | E2B_TEMPLATE | Required when using E2B | Your Docker-capable template ID |
 | RENDER_API_KEY | Optional CLI deployment credential | Render account settings |
 
-The example defaults use OpenRouter, google/gemini-2.5-flash for planning/recovery,
-and qwen/qwen3-coder for containerization. Confirm availability in your provider.
-Provider names and endpoint URLs are configuration values. Enter credentials in
-.env locally or Render environment settings.
+All three agents default to `gemini-2.5-flash` through Google's
+OpenAI-compatible Gemini endpoint. Create `LLM_API_KEY` in Google AI Studio and
+enter it in .env locally or Render environment settings. The endpoint and model
+IDs remain configurable so they can be upgraded without changing application code.
 
 ## Connect a worker
 

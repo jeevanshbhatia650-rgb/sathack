@@ -24,13 +24,13 @@ services:
       - key: LLM_API_KEY
         sync: false
       - key: LLM_BASE_URL
-        value: https://openrouter.ai/api/v1
+        value: https://generativelanguage.googleapis.com/v1beta/openai
       - key: PLANNER_MODEL
-        value: google/gemini-2.5-flash
+        value: gemini-2.5-flash
       - key: CONTAINERIZER_MODEL
-        value: qwen/qwen3-coder
+        value: gemini-2.5-flash
       - key: RECOVERY_MODEL
-        value: google/gemini-2.5-flash
+        value: gemini-2.5-flash
       - key: DOCKERHUB_USERNAME
         sync: false
       - key: DOCKERHUB_TOKEN
