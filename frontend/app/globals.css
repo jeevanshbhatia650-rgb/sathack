@@ -1,0 +1,127 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@500;600;700;800;900&family=JetBrains+Mono:wght@400;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg-canvas: #FAF9F5;
+  --bg-surface: #FFFFFF;
+  --bg-elevated: #F2F0E8;
+  --ink-primary: #111111;
+  --ink-secondary: #4A4A52;
+  --accent-purple: #B4B0F5;
+  --accent-gold: #E2C870;
+  --accent-charcoal: #18181B;
+  --border-ink: #111111;
+  --click-x: 92vw;
+  --click-y: 4vh;
+
+  --background: 224 71% 4%;
+  --foreground: 210 40% 98%;
+  --card: 224 71% 4%;
+  --card-foreground: 210 40% 98%;
+  --primary: 217.2 91.2% 59.8%;
+  --primary-foreground: 222.2 47.4% 11.2%;
+  --border: 217.2 32.6% 17.5%;
+  --radius: 1rem;
+}
+
+html.dark {
+  --bg-canvas: #0B0B0E;
+  --bg-surface: #141419;
+  --bg-elevated: #1C1C24;
+  --ink-primary: #F4F4F6;
+  --ink-secondary: #A1A1AA;
+  --accent-purple: #B4B0F5;
+  --accent-gold: #E2C870;
+  --accent-charcoal: #27272A;
+  --border-ink: #2E2E3A;
+}
+
+body {
+  background-color: var(--bg-canvas);
+  color: var(--ink-primary);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  overflow-x: hidden;
+  /* Subtle isometric dot matrix pattern */
+  background-image: radial-gradient(rgba(17, 17, 17, 0.08) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+html.dark body {
+  background-image: radial-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* ==========================================================================
+   PURE GPU CIRCULAR WIPE DARK/LIGHT MODE VIEW TRANSITION (60FPS)
+   ========================================================================== */
+::view-transition-group(root) {
+  animation-duration: 520ms;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+::view-transition-new(root) {
+  animation: smoothThemeReveal 520ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  z-index: 9999;
+  will-change: clip-path;
+}
+
+::view-transition-old(root) {
+  animation: none;
+  z-index: 1;
+}
+
+@keyframes smoothThemeReveal {
+  from {
+    clip-path: circle(0px at var(--click-x, 92%) var(--click-y, 4%));
+  }
+  to {
+    clip-path: circle(150vmax at var(--click-x, 92%) var(--click-y, 4%));
+  }
+}
+
+/* 3D Glossy Neumorphic Dark Specs */
+.glossy-dark-card {
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 
+    0 10px 30px -10px rgba(0, 0, 0, 0.7),
+    inset 0 1px 1px 0 rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(16px);
+  position: relative;
+  overflow: hidden;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glossy-dark-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(245, 158, 11, 0.4);
+  box-shadow: 
+    0 20px 40px -15px rgba(245, 158, 11, 0.3),
+    0 0 25px -5px rgba(245, 158, 11, 0.25),
+    inset 0 1px 2px 0 rgba(255, 255, 255, 0.4);
+}
+
+.glitter-card {
+  position: relative;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 
+    0 15px 35px -10px rgba(0, 0, 0, 0.9),
+    0 0 15px -3px rgba(245, 158, 11, 0.15),
+    inset 0 1px 2px rgba(255, 255, 255, 0.2);
+}
+
+@keyframes bounceBar {
+  0% {
+    transform: scaleY(0.2);
+  }
+  100% {
+    transform: scaleY(1);
+  }
+}
+

@@ -1,0 +1,48 @@
+{
+  "name": "webwink-protocol",
+  "version": "1.0.0",
+  "description": "WebWink Protocol — Autonomous Agency Conversion Engine & 2026 Commercial Architecture",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "type-check": "tsc --noEmit"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "@react-three/drei": "^9.121.5",
+    "@react-three/fiber": "^8.17.10",
+    "@supabase/supabase-js": "^2.119.0",
+    "@types/node": "^20.19.43",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@types/three": "^0.187.0",
+    "autoprefixer": "^10.6.2",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "framer-motion": "^14.14.0",
+    "googleapis": "^190.0.0",
+    "gsap": "^3.15.1",
+    "jspdf": "^4.2.1",
+    "lucide-react": "^1.72.0",
+    "motion": "^14.14.0",
+    "next": "^14.2.18",
+    "postcss": "^8.5.32",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "tailwind-merge": "^3.7.0",
+    "tailwindcss": "^3.4.1",
+    "three": "^0.187.0",
+    "uuid": "^14.0.3",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@types/uuid": "^10.0.0",
+    "sharp": "^0.35.5",
+    "typescript": "^5.6.3",
+    "vercel": "^65.16.0"
+  }
+}
