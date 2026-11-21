@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "recovery",
+  "type": "object",
+  "properties": {
+    "action": {
+      "enum": [
+        "RETRY_SAME_WORKER",
+        "INCREASE_MEMORY",
+        "REROUTE_WORKER",
+        "PATCH_RUNTIME",
+        "ABORT"
+      ]
+    },
+    "reason": {
+      "type": "string"
+    },
+    "new_est_ram_mb": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "default": null
+    },
+    "retry_allowed": {
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "action",
+    "reason",
+    "retry_allowed"
+  ],
+  "additionalProperties": false
+}
