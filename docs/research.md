@@ -25,3 +25,7 @@ DL3002 tracks explicit root USER instructions by build stage. A missing USER ins
 ## MCP adaptation
 
 The stateless bridge accepts POST requests at the configured streamable HTTP path and manages child processes. Choose it only for workloads that tolerate independent requests. Use a session-aware bridge for a stateful MCP contract and test initialization plus a follow-up request. [Source](https://github.com/supercorp-ai/supergateway/blob/5ad19d39c033fde33f18c2edefa996771980aafe/src/gateways/stdioToStatelessStreamableHttp.ts)
+
+## Failure evidence
+
+Container.wait returns a result containing StatusCode. Container lookup obtains inspection metadata. Have the worker capture the exit status and inspected State.OOMKilled before cleanup. Inferring memory exhaustion from exit 137 alone would also classify an unrelated SIGKILL as OOM. [Source](https://github.com/docker/docker-py/blob/5eb575b01de0dee1e72294b4f70e02056eef331c/docker/models/containers.py)
