@@ -39,3 +39,17 @@ The proposed modules above describe future implementation. Read the [source comp
 ## Walk through a job
 
 Follow the [sample plan and acceptance cases](docs/acceptance.md) from initial dispatch through service readiness, a failed attempt and artifact fan-in. The JSON schemas describe the model response shapes. DAG validity, evidence matching, allocation and attempt ownership require the manager checks described above.
+
+## Python architecture
+
+Install with Python 3.11 or newer using a virtual environment and pip install -e .
+The manager.graph modules implement typed model invocation, evidence-bound plan
+validation, three-tier build selection, bounded recovery proposals and LangGraph
+dispatch. Supply a ModelClient implementation to call your chosen provider.
+create_workflow accepts an asynchronous claim_and_enqueue adapter.
+
+Deployment integrations still require a durable claim/outbox store, repository
+scanner, security validation adapter, Railpack adapter, allocator, registry and
+worker runtime. The build validator must enforce policy before accepting an
+artifact. BuildHistory is an in-memory value and must be persisted under the
+task's attempt transaction by the deployment adapter.
