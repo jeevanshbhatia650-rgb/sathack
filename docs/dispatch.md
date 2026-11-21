@@ -9,3 +9,9 @@ Serialize updates per job or use optimistic revision checks. Recheck service rea
 ## Allocation
 
 Filter to live workers with fresh telemetry and compatible runtime and network capabilities. Subtract committed reservations and the configured host safety floor from usable capacity under one consistent accounting model. Charge each reservation once. Check CPU headroom, RAM and the task's ceilings, then atomically reserve against the worker capacity revision. A concurrent winner forces reevaluation. Insufficient capacity queues the task until capacity changes or its deadline expires. Agent estimates are inputs to admission. Release reservations on completion, abort or confirmed lease expiry.
+
+## Handoff
+
+A deploy blueprint binds job, task, attempt, epoch, worker, expiry, repo URL and commit, workload argv, build artifact digest, transport, limits, env binding names and input artifact references. Authenticate both peers over the Tailscale network and verify the manager's signed payload. Fetch only the authorized commit and check its SHA before building. Resolve env bindings on the worker at run time. Publish batch artifacts with integrity digests before reporting COMPLETED. A service registers its endpoint and health against the current epoch.
+
+Use a durable outbox in the same transaction as the task claim. Replay unacknowledged deliveries by attempt ID. Workers persist acceptance before launch and reconcile by attempt label on restart. Accept status events only for the active epoch and monotonically advancing sequence. Stale events must never release the current reservation or re-enable a stale endpoint.
