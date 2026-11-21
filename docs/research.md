@@ -9,3 +9,7 @@ The bank support example pairs role instructions with a Pydantic output model. T
 ## DAG validation
 
 In topological_generations, nodes with zero indegree form the frontier. Removing their outgoing edges exposes the next frontier. Remaining positive indegrees signal a cycle. Use this once on a frozen proposed plan. Runtime eligibility additionally depends on parent outcomes. [Source](https://github.com/networkx/networkx/blob/6c1a31d1613ad04cf2b2e3d63090b94979521981/networkx/algorithms/dag.py)
+
+## Dynamic dispatch
+
+Send on a conditional edge invokes a target node with custom state. Pass one task and attempt identity per Send. Keep worker I/O asynchronous so the graph step can finish while an unrelated service continues running. [Source](https://github.com/langchain-ai/langgraph/blob/c6335a4255dc1d8abc25a7677f9c072c7ab27b9c/libs/langgraph/langgraph/types.py)
