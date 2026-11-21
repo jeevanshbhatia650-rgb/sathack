@@ -7,7 +7,7 @@ class Settings(BaseSettings):
     redis_url: str = ""
     mesh_master_secret: str = ""
     admin_dashboard_key: str = ""
-    llm_api_key: str = ""
+    gemini_api_key: str = ""
     llm_base_url: str = "https://generativelanguage.googleapis.com/v1beta/openai"
     planner_model: str = "gemini-2.5-flash"
     containerizer_model: str = "gemini-2.5-flash"
@@ -20,7 +20,7 @@ class Settings(BaseSettings):
     host_floor_min_mb: int = 512
 
     def warn_missing(self) -> None:
-        missing = [name for name in ("llm_api_key", "admin_dashboard_key",
+        missing = [name for name in ("gemini_api_key", "admin_dashboard_key",
                    "mesh_master_secret", "dockerhub_username", "dockerhub_token")
                    if not getattr(self, name)]
         if missing:

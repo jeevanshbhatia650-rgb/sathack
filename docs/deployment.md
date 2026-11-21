@@ -28,7 +28,7 @@ and optional sandbox usage follow those providers' terms.
 
 | Variable | Requirement | Source |
 | --- | --- | --- |
-| LLM_API_KEY | Required for agents | Google AI Studio Gemini API key |
+| GEMINI_API_KEY | Required for agents | Google AI Studio Gemini API key |
 | LLM_BASE_URL | Required configuration | Gemini OpenAI-compatible endpoint |
 | PLANNER_MODEL | Required configuration | Gemini model ID |
 | CONTAINERIZER_MODEL | Required configuration | Gemini model ID |
@@ -42,7 +42,7 @@ and optional sandbox usage follow those providers' terms.
 | RENDER_API_KEY | Optional CLI deployment credential | Render account settings |
 
 All three agents default to `gemini-2.5-flash` through Google's
-OpenAI-compatible Gemini endpoint. Create `LLM_API_KEY` in Google AI Studio and
+OpenAI-compatible Gemini endpoint. Create `GEMINI_API_KEY` in Google AI Studio and
 enter it in .env locally or Render environment settings. The endpoint and model
 IDs remain configurable so they can be upgraded without changing application code.
 
