@@ -1,6 +1,6 @@
 # OFFDOCK agent architecture
 
-OFFDOCK turns a request about one or more pinned repositories into independently scheduled container workloads. This repository contains the architecture specification. The manager owns the job record and policy decisions. Three model calls can propose a plan, a Dockerfile, or a runtime recovery action. Only a worker with a valid lease can build or run the selected workload.
+OFFDOCK turns a request about one or more pinned repositories into independently scheduled container workloads. This repository contains the FastAPI control server, remote Docker agent and architecture specification. The manager owns the job record and policy decisions. Three model calls can propose a plan, a Dockerfile, or a runtime recovery action. Only a worker with a valid lease can build or run the selected workload.
 
 ```mermaid
 flowchart TD
@@ -40,16 +40,13 @@ The proposed modules above describe future implementation. Read the [source comp
 
 Follow the [sample plan and acceptance cases](docs/acceptance.md) from initial dispatch through service readiness, a failed attempt and artifact fan-in. The JSON schemas describe the model response shapes. DAG validity, evidence matching, allocation and attempt ownership require the manager checks described above.
 
-## Python architecture
+## Run the orchestrator
 
-Install with Python 3.11 or newer using a virtual environment and pip install -e .
-The manager.graph modules implement typed model invocation, evidence-bound plan
-validation, three-tier build selection, bounded recovery proposals and LangGraph
-dispatch. Supply a ModelClient implementation to call your chosen provider.
-create_workflow accepts an asynchronous claim_and_enqueue adapter.
+The Render Blueprint, local setup, node join workflow and required credentials are
+documented in [the deployment guide](docs/deployment.md).
 
-Deployment integrations still require a durable claim/outbox store, repository
-scanner, security validation adapter, Railpack adapter, allocator, registry and
-worker runtime. The build validator must enforce policy before accepting an
-artifact. BuildHistory is an in-memory value and must be persisted under the
-task's attempt transaction by the deployment adapter.
+Install requirements-dev.txt in a virtual environment, run pytest -v, and start
+uvicorn orchestrator.main:app. GET /healthz works with empty credentials.
+Use the dashboard at / to pair a Docker worker and submit repository workloads.
+The server includes Redis checkpoints and caches, authenticated WebSocket tunnels,
+bounded HTTP proxying, concurrent RAM leases and dependency-driven LangGraph dispatch.

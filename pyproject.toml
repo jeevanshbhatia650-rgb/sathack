@@ -9,7 +9,13 @@ requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools.packages.find]
-include = ["shared*", "manager*"]
+include = ["shared*", "manager*", "orchestrator*", "node_agent*"]
 
 [tool.setuptools.package-data]
 "manager.graph" = ["prompts/*.txt"]
+
+"orchestrator" = ["static/*.html"]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+asyncio_default_fixture_loop_scope = "function"

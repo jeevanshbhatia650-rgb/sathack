@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Offdock</title><script src="https://cdn.tailwindcss.com"></script></head>
+<body class="bg-slate-950 text-slate-200 p-8 max-w-6xl mx-auto">
+<header class="mb-8"><h1 class="text-3xl font-bold">Offdock</h1><p class="text-slate-400">Distributed container workspace</p></header>
+<label>Dashboard key <input id="key" type="password" class="bg-slate-800 p-2 rounded" autocomplete="off"></label>
+<button id="connect" class="p-2 bg-indigo-600 rounded">Connect</button><p id="status" role="status"></p>
+<section class="my-8"><h2 class="text-xl">Nodes</h2><div id="nodes" class="grid grid-cols-2 gap-4 my-4"></div>
+<button id="pair" class="bg-slate-700 p-3 rounded">Generate Node Join Command</button>
+<button id="sandbox" class="bg-slate-700 p-3 rounded">Spawn Cloud Sandbox (E2B)</button>
+<pre id="join" class="whitespace-pre-wrap break-all mt-4"></pre></section>
+<section class="grid gap-4"><h2 class="text-xl">Launch workload</h2>
+<div id="presets"></div>
+<label>GitHub URLs, one per line<textarea id="repos" class="block w-full bg-slate-800 p-3 rounded" rows="3"></textarea></label>
+<label>Task prompt<textarea id="prompt" class="block w-full bg-slate-800 p-3 rounded" rows="3"></textarea></label>
+<label>Optional Docker Hub image<input id="image" class="block w-full bg-slate-800 p-2 rounded"></label>
+<div><label><input id="agentcache" type="checkbox" checked> Agent cache</label>
+<label class="ml-4"><input id="execcache" type="checkbox"> Execution cache</label>
+<select id="transport" class="bg-slate-800 ml-4"><option>blueprint</option><option>dockerhub</option></select></div>
+<button id="launch" class="bg-indigo-600 p-3 rounded">Launch job</button></section>
+<section class="my-8"><h2 class="text-xl">Job progress</h2><pre id="jobs" class="whitespace-pre-wrap"></pre></section>
+<section><h2 class="text-xl">Container console</h2><pre id="logs" class="bg-black p-4 h-72 overflow-auto whitespace-pre-wrap"></pre></section>
+<script>
+const el = id => document.getElementById(id);
+let socket, retry = 1000;
+const nodeCards = new Map();
+async function api(path, body) {
+  const response = await fetch(path, {method:'POST',headers:{'Content-Type':'application/json',
+    Authorization:'Bearer '+el('key').value},body:JSON.stringify(body || {})});
+  const data = await response.json();
+  if (!response.ok) throw Error(data.detail || response.status);
+  return data;
+}
+function connect() {
+  if (!el('key').value) return;
+  if (socket) socket.close();
+  socket = new WebSocket((location.protocol === 'https:'?'wss://':'ws://')+location.host+'/ws/cluster');
+  socket.onopen = () => {retry=1000;socket.send(JSON.stringify({token:el('key').value}));el('status').textContent='Connected';};
+  socket.onmessage = event => {
+    const data=JSON.parse(event.data);
+    if(data.type==='TELEMETRY') {
+      let card=nodeCards.get(data.node_id);
+      if(!card){card=document.createElement('div');card.className='bg-slate-800 p-4 rounded';nodeCards.set(data.node_id,card);el('nodes').append(card);}
+      card.textContent=data.node_id+' · '+data.node_type+' · '+Math.round(data.available_ram_mb)+' MB available · '+data.cpu_percent+'% CPU · '+data.running_containers+' containers';
+    }
+    if(data.type==='JOB_STATE')el('jobs').textContent=JSON.stringify(data,null,2);
+    if(data.type==='LOG_CHUNK'){el('logs').textContent=(el('logs').textContent+data.text+'\n').slice(-50000);el('logs').scrollTop=el('logs').scrollHeight;}
+  };
+  socket.onclose=()=>{el('status').textContent='Disconnected; reconnecting';setTimeout(connect,retry);retry=Math.min(retry*2,30000);};
+}
+el('connect').onclick=connect;
+el('pair').onclick=async()=>{try{el('join').textContent=(await api('/v1/nodes/pair')).command;}catch(e){el('status').textContent=e.message;}};
+el('sandbox').onclick=async()=>{try{el('join').textContent=JSON.stringify(await api('/v1/nodes/spawn-sandbox'));}catch(e){el('status').textContent=e.message;}};
+el('launch').onclick=async()=>{try{
+ const repos=el('repos').value.trim().split(/\s+/).map(repo_url=>({repo_url,docker_image_override:el('image').value||null}));
+ const data=await api('/v1/jobs',{prompt:el('prompt').value,repos,use_exec_cache:el('execcache').checked,use_agent_cache:el('agentcache').checked,image_transport:el('transport').value});
+ el('status').textContent='Submitted '+data.job_id;
+}catch(e){el('status').textContent=e.message;}};
+for(const [name,prompt] of [['Batch','Run the verified batch entrypoint'],['Service','Start the verified HTTP service'],['Parallel','Run independently executable workloads in parallel']]){
+ const button=document.createElement('button');button.textContent=name;button.className='mr-2 px-3 py-1 bg-slate-800 rounded';button.onclick=()=>el('prompt').value=prompt;el('presets').append(button);
+}
+</script></body></html>

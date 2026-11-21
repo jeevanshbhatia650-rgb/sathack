@@ -55,3 +55,50 @@ class RepositoryReport(Model):
     commands: list[str]
     env_keys: list[str]
     context: str
+
+
+from pydantic import HttpUrl, field_validator
+
+
+class RepoSubmissionItem(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    repo_url: HttpUrl
+    branch: str = Field(default="main", min_length=1, max_length=200)
+    hint_role: str | None = None
+    task_type: Literal["auto", "batch", "service"] = "auto"
+    docker_image_override: str | None = None
+    env_vars: dict[str, str] = Field(default_factory=dict)
+
+    @field_validator("repo_url")
+    @classmethod
+    def github_only(cls, value: HttpUrl) -> HttpUrl:
+        import re
+        if (value.scheme != "https" or value.host != "github.com" or value.username
+                or value.password or value.query or value.fragment
+                or not re.fullmatch(r"/[\w.-]+/[\w.-]+/?", value.path or "")):
+            raise ValueError("Expected an HTTPS GitHub owner/repository URL")
+        return value
+
+
+class JobSubmissionRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    prompt: str = Field(min_length=5, max_length=2000)
+    repos: list[RepoSubmissionItem] = Field(min_length=1, max_length=12)
+    use_exec_cache: bool = True
+    use_agent_cache: bool = True
+    image_transport: Literal["blueprint", "dockerhub"] = "blueprint"
+
+
+class Telemetry(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    total_ram_mb: float = Field(gt=0)
+    available_ram_mb: float = Field(ge=0)
+    cpu_percent: float = Field(ge=0, le=100)
+    cpu_cores: int = Field(gt=0)
+    running_containers: int = Field(ge=0)
+    rows_written: int = Field(default=0, ge=0)
+    bytes_written: int = Field(default=0, ge=0)
+    ip: str = Field(default="", max_length=64)
+    node_type: Literal["REMOTE DOCKER", "E2B SANDBOX"] = "REMOTE DOCKER"
+    cached_base_images: list[str] = Field(default_factory=list, max_length=8)
+    railpack: bool = False
