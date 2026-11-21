@@ -21,3 +21,17 @@ flowchart TD
 ```
 
 The diagram shows logical dependencies. Planning consumes a read-only scan. Each dispatched task reuses the same report by commit and selects its workload-specific build inputs. Build preparation can overlap capacity discovery. A reservation must still succeed before the manager issues a blueprint.
+
+## Implementation map
+
+| Proposed module | Owns |
+| --- | --- |
+| shared/schemas.py and security.py | Wire models, blueprint authentication and policy admission |
+| manager/graph/planner.py | Prompt invocation and candidate plan validation |
+| manager/graph/containerizer.py | Build tier selection and repair proposals |
+| manager/graph/recovery.py | Runtime incident analysis and proposed decisions |
+| manager/graph/state.py and workflow.py | Durable job, task, attempt and event state, reducers and conditional dispatch |
+| manager/scheduler/registry.py and allocator.py | Worker epochs, health, reservations and capacity |
+| worker/daemon.py, builder.py, sandbox.py, telemetry.py and watchdog.py | Blueprint acceptance, isolated build/run, lifecycle evidence and heartbeats |
+
+The proposed modules above describe future implementation. Read the [source comparison](docs/research.md), [planning contract](docs/planning.md), [dispatch protocol](docs/dispatch.md), [build routes](docs/builds.md) and [recovery decisions](docs/recovery.md). The exact model instructions live in [prompts](prompts/) and their wire contracts in [contracts](contracts/).
