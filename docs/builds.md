@@ -9,3 +9,7 @@ Use the model fallback for an unsupported workload, required transport adaptatio
 Parse Dockerfiles with Dockerfile grammar including multistage FROM references and continuations. Resolve every external image to an approved digest from the configured Python slim, Node slim or gateway families. Inspect stages for prohibited mounts, remote scripts, embedded secrets and unsafe privileges. Require Hadolint success under manager-controlled configuration and verify the effective final user. Reject unsupported frontend directives and dynamic operations the policy cannot evaluate. Verify the final image metadata again before execution.
 
 Use an isolated, disposable build environment with bounded CPU, memory, time and network access. Exclude host credentials and the Docker socket from build contexts. The worker independently verifies the signed blueprint and approved artifact digest before starting BuildKit.
+
+## MCP workloads
+
+Keep the native transport in the task record. A remotely accessed stdio service needs a pinned gateway plus verified server argv and a declared remote transport. Select stateful streamable HTTP when session continuity is required, or SSE only when required by the client. Bind the gateway to the worker's authorized service interface and pass the assigned port to discovery. Reject incompatible session or routing requirements. Publish HEALTHY only after a protocol-level initialization probe succeeds. Use task-specific completion checks for batch workloads.
