@@ -35,3 +35,7 @@ The diagram shows logical dependencies. Planning consumes a read-only scan. Each
 | worker/daemon.py, builder.py, sandbox.py, telemetry.py and watchdog.py | Blueprint acceptance, isolated build/run, lifecycle evidence and heartbeats |
 
 The proposed modules above describe future implementation. Read the [source comparison](docs/research.md), [planning contract](docs/planning.md), [dispatch protocol](docs/dispatch.md), [build routes](docs/builds.md) and [recovery decisions](docs/recovery.md). The exact model instructions live in [prompts](prompts/) and their wire contracts in [contracts](contracts/).
+
+## Walk through a job
+
+Follow the [sample plan and acceptance cases](docs/acceptance.md) from initial dispatch through service readiness, a failed attempt and artifact fan-in. The JSON schemas describe the model response shapes. DAG validity, evidence matching, allocation and attempt ownership require the manager checks described above.
