@@ -15,3 +15,7 @@ Gather the last accepted decisions, remaining retry budget, env binding presence
 | ABORT | Record reason, release the lease and propagate failure to blocked descendants. |
 
 Require retry_allowed=false for ABORT and true for admitted retry actions. Require new_est_ram_mb only for a memory increase. Count runtime attempts atomically against a separately configured finite retry limit. Reject a repeat of the same action and parameters on unchanged evidence. Never reissue a task with external side effects unless it has an idempotency or restart contract.
+
+## Worker loss
+
+The registry expires a worker after the configured heartbeat deadline, increments its lease epoch and invalidates service discovery. Stop new dependents while the service lacks a healthy endpoint. Reconcile already-running consumers according to their declared service-loss policy. Requeue restart-safe tasks from the verified image and persisted inputs once the prior attempt is fenced. If an offline attempt could still write externally and the destination cannot enforce fencing, hold the job for reconciliation. Routine offline routing needs no model. Restarting a service creates a new process and MCP sessions must reconnect.
