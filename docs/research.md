@@ -21,3 +21,7 @@ PythonProvider checks repository files and reads TOML for project metadata. Conv
 ## Dockerfile linting
 
 DL3002 tracks explicit root USER instructions by build stage. A missing USER instruction need not trigger it. OFFDOCK must also resolve inherited image configuration and verify the final effective user before running the image. [Source](https://github.com/hadolint/hadolint/blob/1d901b9c0b0d0445d19b1a9128d89fa55bb4604e/src/Hadolint/Rule/DL3002.hs)
+
+## MCP adaptation
+
+The stateless bridge accepts POST requests at the configured streamable HTTP path and manages child processes. Choose it only for workloads that tolerate independent requests. Use a session-aware bridge for a stateful MCP contract and test initialization plus a follow-up request. [Source](https://github.com/supercorp-ai/supergateway/blob/5ad19d39c033fde33f18c2edefa996771980aafe/src/gateways/stdioToStatelessStreamableHttp.ts)
