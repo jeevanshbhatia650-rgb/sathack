@@ -1,0 +1,21 @@
+[project]
+name = "offdock"
+version = "0.1.0"
+requires-python = ">=3.11"
+dependencies = ["pydantic>=2.10,<3", "langgraph>=1,<2"]
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["shared*", "manager*", "orchestrator*", "node_agent*"]
+
+[tool.setuptools.package-data]
+"manager.graph" = ["prompts/*.txt"]
+
+"orchestrator" = ["static/*.html"]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+asyncio_default_fixture_loop_scope = "function"

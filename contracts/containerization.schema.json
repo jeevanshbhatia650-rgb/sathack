@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "containerization",
+  "type": "object",
+  "properties": {
+    "dockerfile": {
+      "type": "string"
+    },
+    "exposed_port": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "default": null
+    },
+    "healthcheck_path": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "default": null
+    },
+    "detected_runtime": {
+      "type": "string"
+    },
+    "estimated_ram_mb": {
+      "type": "integer",
+      "minimum": 128
+    }
+  },
+  "required": [
+    "dockerfile",
+    "detected_runtime",
+    "estimated_ram_mb"
+  ],
+  "additionalProperties": false
+}

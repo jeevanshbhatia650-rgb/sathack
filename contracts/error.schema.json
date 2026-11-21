@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "error",
+  "type": "object",
+  "properties": {
+    "error": {
+      "enum": [
+        "missing_evidence",
+        "invalid_proposal",
+        "unrepairable"
+      ]
+    },
+    "reason": {
+      "type": "string",
+      "minLength": 1
+    },
+    "missing_facts": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "error",
+    "reason",
+    "missing_facts"
+  ],
+  "additionalProperties": false
+}
