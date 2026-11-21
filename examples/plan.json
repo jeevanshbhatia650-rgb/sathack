@@ -1,0 +1,42 @@
+{
+  "job_id": "fixture-01",
+  "tasks": [
+    {
+      "id": "catalog",
+      "repo_url": "https://example.invalid/fixtures/pipeline.git",
+      "commit_sha": "0123456789abcdef0123456789abcdef01234567",
+      "task_type": "service",
+      "depends_on": [],
+      "start_cmd_override": "python -m catalog"
+    },
+    {
+      "id": "fetch_a",
+      "repo_url": "https://example.invalid/fixtures/pipeline.git",
+      "commit_sha": "0123456789abcdef0123456789abcdef01234567",
+      "task_type": "batch",
+      "depends_on": [
+        "catalog"
+      ],
+      "start_cmd_override": "python -m fetch_a"
+    },
+    {
+      "id": "fetch_b",
+      "repo_url": "https://example.invalid/fixtures/pipeline.git",
+      "commit_sha": "0123456789abcdef0123456789abcdef01234567",
+      "task_type": "batch",
+      "depends_on": [],
+      "start_cmd_override": "python -m fetch_b"
+    },
+    {
+      "id": "merge",
+      "repo_url": "https://example.invalid/fixtures/pipeline.git",
+      "commit_sha": "0123456789abcdef0123456789abcdef01234567",
+      "task_type": "batch",
+      "depends_on": [
+        "fetch_a",
+        "fetch_b"
+      ],
+      "start_cmd_override": "python -m merge"
+    }
+  ]
+}
